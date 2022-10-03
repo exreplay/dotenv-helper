@@ -10,12 +10,12 @@ Just use the execute command from your prefered package manager.
 
 ```bash
 # npm
-$ npx dotenv-helper
+$ npx @averjs/dotenv-helper
 
 # yarn
-$ yarn dlx dotenv-helper
+$ yarn dlx @averjs/dotenv-helper
 
 # pnpm
-$ pnpm dlx dotenv-helper
+$ pnpm dlx @averjs/dotenv-helper
 ```
 
