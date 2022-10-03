@@ -1,6 +1,6 @@
 {
   "name": "dotenv-helper",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "A helper for environment files",
   "bin": "./bin/dotenv-helper.mjs",
   "files": [
