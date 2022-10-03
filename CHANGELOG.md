@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.4](https://github.com/exreplay/dotenv-helper/compare/v0.0.3...v0.0.4) (2022-10-03)
+
+
+### Bug Fixes
+
+* added missing confirm const ([24f5af0](https://github.com/exreplay/dotenv-helper/commit/24f5af04554e7407315e9893decf2aa384a38c2f))
+
 ### [0.0.3](https://github.com/exreplay/dotenv-helper/compare/v0.0.2...v0.0.3) (2022-10-03)
 
 
