@@ -1,6 +1,6 @@
 {
   "name": "@averjs/dotenv-helper",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A helper for environment files",
   "bin": "./bin/dotenv-helper.mjs",
   "publishConfig": {
