@@ -1,5 +1,5 @@
 import { readFile, writeFile } from 'fs/promises';
-import { sync } from 'glob';
+import { globbySync } from 'globby';
 import { relative } from 'path';
 import prompts, { PromptObject, Answers } from 'prompts';
 import { Files, Variable, VariableType } from './types';
@@ -13,7 +13,7 @@ export class DotenvHelper {
   }
 
   collectFiles() {
-    return sync(`${this.root}/**/.env.example`, {
+    return globbySync(`${this.root}/**/.env.example`, {
       ignore: ['**/node_modules/**']
     });
   }

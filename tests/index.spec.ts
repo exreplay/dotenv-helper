@@ -48,7 +48,7 @@ describe('test', () => {
         },
         {
           defaultValue: '',
-          type: 'newLine'
+          type: 'new-line'
         }
       ],
       [packageEnv]: [
@@ -59,7 +59,7 @@ describe('test', () => {
         },
         {
           defaultValue: '',
-          type: 'newLine'
+          type: 'new-line'
         },
         {
           defaultValue: '# Another comment',
@@ -72,7 +72,7 @@ describe('test', () => {
         },
         {
           defaultValue: '',
-          type: 'newLine'
+          type: 'new-line'
         }
       ]
     });
@@ -170,7 +170,7 @@ describe('test', () => {
         },
         {
           defaultValue: '',
-          type: 'newLine'
+          type: 'new-line'
         }
       ],
       [packageEnv]: [
@@ -182,7 +182,7 @@ describe('test', () => {
         },
         {
           defaultValue: '',
-          type: 'newLine'
+          type: 'new-line'
         },
         {
           defaultValue: '# Another comment',
@@ -196,7 +196,7 @@ describe('test', () => {
         },
         {
           defaultValue: '',
-          type: 'newLine'
+          type: 'new-line'
         }
       ]
     });
