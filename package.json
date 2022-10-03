@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "description": "A helper for environment files",
   "bin": "./bin/dotenv-helper.mjs",
+  "publishConfig": {
+    "access": "public"
+  },
   "files": [
     "bin",
     "dist"
