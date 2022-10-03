@@ -47,9 +47,24 @@ export class DotenvHelper {
     return variables;
   }
 
-  async parseFiles() {
-    const files = this.collectFiles();
+  async selectFiles() {
+    const collectedFiles = this.collectFiles();
 
+    const { files } = await prompts({
+      type: 'multiselect',
+      name: 'files',
+      message: 'Select files to parse',
+      choices: collectedFiles.map((file) => ({
+        title: relative(this.root, file),
+        value: file,
+        selected: true
+      }))
+    });
+
+    return files as string[];
+  }
+
+  async parseFiles(files: string[]) {
     for (const file of files) {
       const content = await readFile(file, 'utf-8');
       this.files[file] = this.parseContent(content);
@@ -115,32 +130,13 @@ export class DotenvHelper {
     return files;
   }
 
-  async displayFoundFiles() {
-    console.log('Found the following .env.example files:');
-
-    for (const [file] of Object.entries(this.files)) {
-      console.log(`- ${relative(this.root, file)}`);
-    }
-
-    const { confirm } = await prompts({
-      type: 'confirm',
-      name: 'confirm',
-      message: 'Do you want to continue?',
-      initial: true
-    });
-
-    return confirm;
-  }
-
   async execute() {
-    await this.parseFiles();
-
-    const confirm = await this.displayFoundFiles();
-
-    if (!confirm) {
-      console.log('Aborting...');
+    const selectedFiles = await this.selectFiles();
+    if (!selectedFiles.length) {
+      console.log('No files selected. Exiting...');
       return;
     }
+    await this.parseFiles(selectedFiles);
 
     const questions = this.generateQuestions();
     for (const [file, question] of Object.entries(questions)) {

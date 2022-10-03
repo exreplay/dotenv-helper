@@ -23,7 +23,8 @@ describe('test', () => {
     const packageEnv = resolve(path, 'packages/test/.env.example');
 
     const helper = new DotenvHelper(path);
-    await helper.parseFiles();
+    const collectedFiles = helper.collectFiles();
+    await helper.parseFiles(collectedFiles);
 
     expect(helper.files).toEqual({
       [rootEnv]: [
@@ -84,7 +85,8 @@ describe('test', () => {
     const packageEnv = resolve(path, 'packages/test/.env.example');
 
     const helper = new DotenvHelper(path);
-    await helper.parseFiles();
+    const collectedFiles = helper.collectFiles();
+    await helper.parseFiles(collectedFiles);
     const questions = helper.generateQuestions();
 
     expect(questions).toEqual({
@@ -131,7 +133,8 @@ describe('test', () => {
     const packageEnv = resolve(path, 'packages/test/.env.example');
 
     const helper = new DotenvHelper(path);
-    await helper.parseFiles();
+    const collectedFiles = helper.collectFiles();
+    await helper.parseFiles(collectedFiles);
 
     helper.setAnswers(rootEnv, {
       1: 'localhost',
@@ -208,7 +211,8 @@ describe('test', () => {
     const packageEnv = resolve(path, 'packages/test/.env.example');
 
     const helper = new DotenvHelper(path);
-    await helper.parseFiles();
+    const collectedFiles = helper.collectFiles();
+    await helper.parseFiles(collectedFiles);
 
     helper.setAnswers(rootEnv, {
       1: 'localhost',
