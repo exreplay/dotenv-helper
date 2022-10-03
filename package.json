@@ -1,0 +1,28 @@
+{
+  "name": "dotenv-helper",
+  "version": "1.0.0",
+  "description": "A helper for environment files",
+  "bin": "./bin/dotenv-helper.mjs",
+  "files": [
+    "bin",
+    "dist"
+  ],
+  "scripts": {
+    "prepack": "unbuild",
+    "build": "unbuild",
+    "test": "vitest"
+  },
+  "devDependencies": {
+    "@averjs/eslint-config": "^3.1.0",
+    "@types/glob": "^8.0.0",
+    "@types/node": "16",
+    "@types/prompts": "^2.0.14",
+    "typescript": "^4.8.4",
+    "unbuild": "^0.8.11",
+    "vitest": "^0.23.4"
+  },
+  "dependencies": {
+    "glob": "^8.0.3",
+    "prompts": "^2.4.2"
+  }
+}

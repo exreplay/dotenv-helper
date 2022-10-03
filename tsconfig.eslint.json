@@ -1,0 +1,13 @@
+{
+  "include": [
+    ".eslintrc.js",
+    "**/*.d.ts",
+    "**/*.ts",
+    "**/*.mjs"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}
+
