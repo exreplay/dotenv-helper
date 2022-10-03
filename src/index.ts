@@ -135,7 +135,7 @@ export class DotenvHelper {
   async execute() {
     await this.parseFiles();
 
-    await this.displayFoundFiles();
+    const confirm = await this.displayFoundFiles();
 
     if (!confirm) {
       console.log('Aborting...');
