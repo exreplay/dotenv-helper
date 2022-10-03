@@ -115,8 +115,32 @@ export class DotenvHelper {
     return files;
   }
 
+  async displayFoundFiles() {
+    console.log('Found the following .env.example files:');
+
+    for (const [file] of Object.entries(this.files)) {
+      console.log(`- ${relative(this.root, file)}`);
+    }
+
+    const { confirm } = await prompts({
+      type: 'confirm',
+      name: 'confirm',
+      message: 'Do you want to continue?',
+      initial: true
+    });
+
+    return confirm;
+  }
+
   async execute() {
     await this.parseFiles();
+
+    await this.displayFoundFiles();
+
+    if (!confirm) {
+      console.log('Aborting...');
+      return;
+    }
 
     const questions = this.generateQuestions();
     for (const [file, question] of Object.entries(questions)) {
