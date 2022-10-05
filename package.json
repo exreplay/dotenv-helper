@@ -1,8 +1,8 @@
 {
-  "name": "@averjs/dotenv-helper",
+  "name": "set.env",
   "version": "0.0.5",
   "description": "A helper for environment files",
-  "bin": "./bin/dotenv-helper.mjs",
+  "bin": "./bin/set.env.mjs",
   "publishConfig": {
     "access": "public"
   },
@@ -18,7 +18,7 @@
   "devDependencies": {
     "@averjs/eslint-config": "^3.1.0",
     "@types/node": "16",
-    "@types/prompts": "^2.0.14",
+    "@types/prompts": "^2.4.1",
     "standard-version": "^9.5.0",
     "typescript": "^4.8.4",
     "unbuild": "^0.8.11",

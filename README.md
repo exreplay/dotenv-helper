@@ -1,4 +1,4 @@
-# Dotenv Helper
+# set.env
 
 When setting up a new project (e.g. a monorepo) you have to look in every package if there is a `.env.example`, copy the file, rename it to `.env` and update its content.
 
@@ -10,12 +10,12 @@ Just use the execute command from your prefered package manager.
 
 ```bash
 # npm
-$ npx @averjs/dotenv-helper
+$ npx set.env
 
 # yarn
-$ yarn dlx @averjs/dotenv-helper
+$ yarn dlx set.env
 
 # pnpm
-$ pnpm dlx @averjs/dotenv-helper
+$ pnpm dlx set.env
 ```
 

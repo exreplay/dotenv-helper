@@ -3,7 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@averjs/eslint-config': ^3.1.0
   '@types/node': '16'
-  '@types/prompts': ^2.0.14
+  '@types/prompts': ^2.4.1
   globby: ^13.1.2
   prompts: ^2.4.2
   standard-version: ^9.5.0
@@ -18,7 +18,7 @@ dependencies:
 devDependencies:
   '@averjs/eslint-config': 3.1.0_typescript@4.8.4
   '@types/node': 16.11.63
-  '@types/prompts': 2.0.14
+  '@types/prompts': 2.4.1
   standard-version: 9.5.0
   typescript: 4.8.4
   unbuild: 0.8.11
@@ -522,8 +522,8 @@ packages:
     resolution: {integrity: sha512-Gj7cI7z+98M282Tqmp2K5EIsoouUEzbBJhQQzDE3jSIRk6r9gsz0oUokqIUR4u1R3dMHo0pDHM7sNOHyhulypw==}
     dev: true
 
-  /@types/prompts/2.0.14:
-    resolution: {integrity: sha512-HZBd99fKxRWpYCErtm2/yxUZv6/PBI9J7N4TNFffl5JbrYMHBwF25DjQGTW3b3jmXq+9P6/8fCIb2ee57BFfYA==}
+  /@types/prompts/2.4.1:
+    resolution: {integrity: sha512-1Mqzhzi9W5KlooNE4o0JwSXGUDeQXKldbGn9NO4tpxwZbHXYd+WcKpCksG2lbhH7U9I9LigfsdVsP2QAY0lNPA==}
     dependencies:
       '@types/node': 18.7.23
     dev: true

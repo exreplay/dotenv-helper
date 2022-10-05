@@ -4,7 +4,7 @@ import { relative } from 'path';
 import prompts, { PromptObject, Answers } from 'prompts';
 import { Files, Variable, VariableType } from './types';
 
-export class DotenvHelper {
+export class SetEnvHelper {
   root: string;
   files: Files = {};
 

@@ -1,4 +1,4 @@
-import { DotenvHelper } from '../src/index';
+import { SetEnvHelper } from '../src/index';
 
-const helper = new DotenvHelper(process.cwd());
+const helper = new SetEnvHelper(process.cwd());
 helper.execute().catch(console.error);
