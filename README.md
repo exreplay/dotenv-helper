@@ -10,12 +10,12 @@ Just use the execute command from your prefered package manager.
 
 ```bash
 # npm
-$ npx set.env
+$ npx set-dot-env
 
 # yarn
-$ yarn dlx set.env
+$ yarn dlx set-dot-env
 
 # pnpm
-$ pnpm dlx set.env
+$ pnpm dlx set-dot-env
 ```
 
