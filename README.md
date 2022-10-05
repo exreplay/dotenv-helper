@@ -1,4 +1,4 @@
-# set.env
+# set-dot-env
 
 When setting up a new project (e.g. a monorepo) you have to look in every package if there is a `.env.example`, copy the file, rename it to `.env` and update its content.
 
