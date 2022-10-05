@@ -1,6 +1,6 @@
 {
   "name": "config-dot-env",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "A helper for environment files",
   "bin": "./bin/config-dot-env.mjs",
   "publishConfig": {
