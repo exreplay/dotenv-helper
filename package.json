@@ -1,8 +1,8 @@
 {
-  "name": "set-dot-env",
+  "name": "config-dot-env",
   "version": "0.0.7",
   "description": "A helper for environment files",
-  "bin": "./bin/set-dot-env.mjs",
+  "bin": "./bin/config-dot-env.mjs",
   "publishConfig": {
     "access": "public"
   },
