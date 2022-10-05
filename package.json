@@ -1,6 +1,6 @@
 {
   "name": "set.env",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "A helper for environment files",
   "bin": "./bin/set.env.mjs",
   "publishConfig": {
