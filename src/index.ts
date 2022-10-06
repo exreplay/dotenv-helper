@@ -4,7 +4,7 @@ import { relative } from 'path';
 import prompts, { PromptObject, Answers } from 'prompts';
 import { Files, Variable, VariableType } from './types';
 
-export class SetEnvHelper {
+export class Envmate {
   root: string;
   files: Files = {};
 

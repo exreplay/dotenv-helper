@@ -1,4 +1,4 @@
-import { SetEnvHelper } from '../src/index';
+import { Envmate } from '../src/index';
 
-const helper = new SetEnvHelper(process.cwd());
+const helper = new Envmate(process.cwd());
 helper.execute().catch(console.error);

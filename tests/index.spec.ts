@@ -1,6 +1,6 @@
 import { resolve } from 'path';
 import { describe, it, expect } from 'vitest';
-import { SetEnvHelper } from '../src/index';
+import { Envmate } from '../src/index';
 
 describe('test', () => {
   it('should collect files correctly', () => {
@@ -9,7 +9,7 @@ describe('test', () => {
     const packageEnv = resolve(path, 'packages/test/.env.example');
     const nodeModulesEnv = resolve(path, 'node_modules/test/.env.example');
 
-    const helper = new SetEnvHelper(path);
+    const helper = new Envmate(path);
     const files = helper.collectFiles();
 
     expect(files).toEqual([rootEnv, packageEnv]);
@@ -22,7 +22,7 @@ describe('test', () => {
     const rootEnv = resolve(path, '.env.example');
     const packageEnv = resolve(path, 'packages/test/.env.example');
 
-    const helper = new SetEnvHelper(path);
+    const helper = new Envmate(path);
     const collectedFiles = helper.collectFiles();
     await helper.parseFiles(collectedFiles);
 
@@ -84,7 +84,7 @@ describe('test', () => {
     const rootEnv = resolve(path, '.env.example');
     const packageEnv = resolve(path, 'packages/test/.env.example');
 
-    const helper = new SetEnvHelper(path);
+    const helper = new Envmate(path);
     const collectedFiles = helper.collectFiles();
     await helper.parseFiles(collectedFiles);
     const questions = helper.generateQuestions();
@@ -132,7 +132,7 @@ describe('test', () => {
     const rootEnv = resolve(path, '.env.example');
     const packageEnv = resolve(path, 'packages/test/.env.example');
 
-    const helper = new SetEnvHelper(path);
+    const helper = new Envmate(path);
     const collectedFiles = helper.collectFiles();
     await helper.parseFiles(collectedFiles);
 
@@ -210,7 +210,7 @@ describe('test', () => {
     const rootEnv = resolve(path, '.env.example');
     const packageEnv = resolve(path, 'packages/test/.env.example');
 
-    const helper = new SetEnvHelper(path);
+    const helper = new Envmate(path);
     const collectedFiles = helper.collectFiles();
     await helper.parseFiles(collectedFiles);
 

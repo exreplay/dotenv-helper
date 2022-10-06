@@ -1,8 +1,8 @@
 {
-  "name": "config-dot-env",
+  "name": "envmate",
   "version": "0.0.8",
   "description": "A helper for environment files",
-  "bin": "./bin/config-dot-env.mjs",
+  "bin": "./bin/envmate.mjs",
   "publishConfig": {
     "access": "public"
   },
