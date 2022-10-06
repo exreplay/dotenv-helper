@@ -1,4 +1,4 @@
-import { Envmate } from '../src/index';
+import { Setenver } from '../src/index';
 
-const helper = new Envmate(process.cwd());
+const helper = new Setenver(process.cwd());
 helper.execute().catch(console.error);

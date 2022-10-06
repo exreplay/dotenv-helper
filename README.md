@@ -1,4 +1,4 @@
-# envmate
+# setenver
 
 When setting up a new project (e.g. a monorepo) you have to look in every package if there is a `.env.example`, copy the file, rename it to `.env` and update its content.
 
@@ -10,12 +10,12 @@ Just use the execute command from your prefered package manager.
 
 ```bash
 # npm
-$ npx envmate
+$ npx setenver
 
 # yarn
-$ yarn dlx envmate
+$ yarn dlx setenver
 
 # pnpm
-$ pnpm dlx envmate
+$ pnpm dlx setenver
 ```
 
