@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.9](https://github.com/exreplay/dotenv-helper/compare/v0.0.8...v0.0.9) (2022-10-06)
+
+
+### Refactor
+
+* rename project to envmate ([956978b](https://github.com/exreplay/dotenv-helper/commit/956978b289231ff3fb06b1156b1746aa50541380))
+
 ### [0.0.8](https://github.com/exreplay/dotenv-helper/compare/v0.0.7...v0.0.8) (2022-10-05)
 
 ### [0.0.7](https://github.com/exreplay/dotenv-helper/compare/v0.0.6...v0.0.7) (2022-10-05)
