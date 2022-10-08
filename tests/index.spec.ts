@@ -1,16 +1,32 @@
+import { rename } from 'fs/promises';
 import { resolve } from 'path';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import { Setenver } from '../src/index';
 
-describe('test', () => {
-  it('should collect files correctly', () => {
-    const path = resolve(__dirname, './fixtures/monorepo/');
-    const rootEnv = resolve(path, '.env.example');
-    const packageEnv = resolve(path, 'packages/test/.env.example');
-    const nodeModulesEnv = resolve(path, 'node_modules/test/.env.example');
+const rootPath = resolve(__dirname, './fixtures/monorepo/');
 
-    const helper = new Setenver(path);
-    const files = helper.collectFiles();
+beforeAll(async () => {
+  await rename(
+    resolve(rootPath, '_.gitignore'),
+    resolve(rootPath, '.gitignore')
+  );
+});
+
+afterAll(async () => {
+  await rename(
+    resolve(rootPath, '.gitignore'),
+    resolve(rootPath, '_.gitignore')
+  );
+});
+
+describe('test', () => {
+  it('should collect files correctly and should ignore folders from .gitignore', async () => {
+    const rootEnv = resolve(rootPath, '.env.example');
+    const packageEnv = resolve(rootPath, 'packages/test/.env.example');
+    const nodeModulesEnv = resolve(rootPath, 'node_modules/test/.env.example');
+
+    const helper = new Setenver(rootPath);
+    const files = await helper.collectFiles();
 
     expect(files).toEqual([rootEnv, packageEnv]);
 
@@ -18,12 +34,11 @@ describe('test', () => {
   });
 
   it('should parse variables correctly', async () => {
-    const path = resolve(__dirname, './fixtures/monorepo/');
-    const rootEnv = resolve(path, '.env.example');
-    const packageEnv = resolve(path, 'packages/test/.env.example');
+    const rootEnv = resolve(rootPath, '.env.example');
+    const packageEnv = resolve(rootPath, 'packages/test/.env.example');
 
-    const helper = new Setenver(path);
-    const collectedFiles = helper.collectFiles();
+    const helper = new Setenver(rootPath);
+    const collectedFiles = await helper.collectFiles();
     await helper.parseFiles(collectedFiles);
 
     expect(helper.files).toEqual({
@@ -80,12 +95,11 @@ describe('test', () => {
   });
 
   it('should generate questions correctly', async () => {
-    const path = resolve(__dirname, './fixtures/monorepo/');
-    const rootEnv = resolve(path, '.env.example');
-    const packageEnv = resolve(path, 'packages/test/.env.example');
+    const rootEnv = resolve(rootPath, '.env.example');
+    const packageEnv = resolve(rootPath, 'packages/test/.env.example');
 
-    const helper = new Setenver(path);
-    const collectedFiles = helper.collectFiles();
+    const helper = new Setenver(rootPath);
+    const collectedFiles = await helper.collectFiles();
     await helper.parseFiles(collectedFiles);
     const questions = helper.generateQuestions();
 
@@ -128,12 +142,11 @@ describe('test', () => {
   });
 
   it('should set answers correctly', async () => {
-    const path = resolve(__dirname, './fixtures/monorepo/');
-    const rootEnv = resolve(path, '.env.example');
-    const packageEnv = resolve(path, 'packages/test/.env.example');
+    const rootEnv = resolve(rootPath, '.env.example');
+    const packageEnv = resolve(rootPath, 'packages/test/.env.example');
 
-    const helper = new Setenver(path);
-    const collectedFiles = helper.collectFiles();
+    const helper = new Setenver(rootPath);
+    const collectedFiles = await helper.collectFiles();
     await helper.parseFiles(collectedFiles);
 
     helper.setAnswers(rootEnv, {
@@ -206,12 +219,11 @@ describe('test', () => {
   });
 
   it('should prepare env file contents correctly', async () => {
-    const path = resolve(__dirname, './fixtures/monorepo/');
-    const rootEnv = resolve(path, '.env.example');
-    const packageEnv = resolve(path, 'packages/test/.env.example');
+    const rootEnv = resolve(rootPath, '.env.example');
+    const packageEnv = resolve(rootPath, 'packages/test/.env.example');
 
-    const helper = new Setenver(path);
-    const collectedFiles = helper.collectFiles();
+    const helper = new Setenver(rootPath);
+    const collectedFiles = await helper.collectFiles();
     await helper.parseFiles(collectedFiles);
 
     helper.setAnswers(rootEnv, {
