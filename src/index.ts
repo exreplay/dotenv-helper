@@ -17,7 +17,8 @@ export class Setenver {
 
     try {
       await access(gitignore, constants.F_OK);
-    } catch {
+    } catch (error) {
+      console.log(error);
       return [];
     }
 
