@@ -1,4 +1,5 @@
-import { readFile, writeFile, access, constants } from 'fs/promises';
+import { readFile, writeFile, access } from 'fs/promises';
+import { constants } from 'fs';
 import { globbySync } from 'globby';
 import { relative, resolve } from 'path';
 import prompts, { PromptObject, Answers } from 'prompts';
@@ -17,8 +18,7 @@ export class Setenver {
 
     try {
       await access(gitignore, constants.F_OK);
-    } catch (error) {
-      console.log(error);
+    } catch {
       return [];
     }
 
