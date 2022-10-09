@@ -21,6 +21,9 @@ $ pnpm dlx setenver
 
 ## Arguments
 
-| Option | Default | Description |
-| ------ | ------- | ----------- |
-| --no-gitignore | false | By default, we parse the .gitignore inside the root folder and use it to exclude files and folders. You can use this argument to disable that behavior. | 
+### --no-gitignore
+
+default: `false`
+
+By default, we parse the .gitignore inside the root folder and use it to exclude files and folders. You can use this argument to disable that behavior. 
+
