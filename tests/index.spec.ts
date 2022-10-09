@@ -4,6 +4,13 @@ import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import { Setenver } from '../src/index';
 
 const rootPath = resolve(__dirname, './fixtures/monorepo/');
+const rootEnv = resolve(rootPath, '.env.example');
+const packageEnv = resolve(rootPath, 'packages/test/.env.example');
+const nodeModulesRootEnv = resolve(rootPath, 'node_modules/test/.env.example');
+const nodeModulesPackageEnv = resolve(
+  rootPath,
+  'packages/test/node_modules/another_test/.env.example'
+);
 
 beforeAll(async () => {
   await rename(
@@ -21,22 +28,28 @@ afterAll(async () => {
 
 describe('test', () => {
   it('should collect files correctly and should ignore folders from .gitignore', async () => {
-    const rootEnv = resolve(rootPath, '.env.example');
-    const packageEnv = resolve(rootPath, 'packages/test/.env.example');
-    const nodeModulesEnv = resolve(rootPath, 'node_modules/test/.env.example');
-
     const helper = new Setenver(rootPath);
     const files = await helper.collectFiles();
 
-    expect(files).toEqual([rootEnv, packageEnv]);
+    expect(files).toContain(rootEnv);
+    expect(files).toContain(packageEnv);
 
-    expect(files).not.toContain(nodeModulesEnv);
+    expect(files).not.toContain(nodeModulesRootEnv);
+    expect(files).not.toContain(nodeModulesPackageEnv);
+  });
+
+  it('should also collect files from node modules when useGitignore is false', async () => {
+    const helper = new Setenver(rootPath);
+    helper.useGitignore = false;
+    const files = await helper.collectFiles();
+
+    expect(files).toContain(rootEnv);
+    expect(files).toContain(packageEnv);
+    expect(files).toContain(nodeModulesRootEnv);
+    expect(files).toContain(nodeModulesPackageEnv);
   });
 
   it('should parse variables correctly', async () => {
-    const rootEnv = resolve(rootPath, '.env.example');
-    const packageEnv = resolve(rootPath, 'packages/test/.env.example');
-
     const helper = new Setenver(rootPath);
     const collectedFiles = await helper.collectFiles();
     await helper.parseFiles(collectedFiles);
@@ -95,9 +108,6 @@ describe('test', () => {
   });
 
   it('should generate questions correctly', async () => {
-    const rootEnv = resolve(rootPath, '.env.example');
-    const packageEnv = resolve(rootPath, 'packages/test/.env.example');
-
     const helper = new Setenver(rootPath);
     const collectedFiles = await helper.collectFiles();
     await helper.parseFiles(collectedFiles);
@@ -142,9 +152,6 @@ describe('test', () => {
   });
 
   it('should set answers correctly', async () => {
-    const rootEnv = resolve(rootPath, '.env.example');
-    const packageEnv = resolve(rootPath, 'packages/test/.env.example');
-
     const helper = new Setenver(rootPath);
     const collectedFiles = await helper.collectFiles();
     await helper.parseFiles(collectedFiles);
@@ -219,9 +226,6 @@ describe('test', () => {
   });
 
   it('should prepare env file contents correctly', async () => {
-    const rootEnv = resolve(rootPath, '.env.example');
-    const packageEnv = resolve(rootPath, 'packages/test/.env.example');
-
     const helper = new Setenver(rootPath);
     const collectedFiles = await helper.collectFiles();
     await helper.parseFiles(collectedFiles);

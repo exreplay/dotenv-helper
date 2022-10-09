@@ -4,13 +4,22 @@ import { globbySync } from 'globby';
 import { relative, resolve } from 'path';
 import prompts, { PromptObject, Answers } from 'prompts';
 import { Files, Variable, VariableType } from './types';
+import mri from 'mri';
 
 export class Setenver {
   root: string;
   files: Files = {};
 
+  useGitignore = true;
+
   constructor(root: string) {
     this.root = root;
+
+    const argv = mri(process.argv.slice(2));
+
+    if (argv.gitignore === false) {
+      this.useGitignore = false;
+    }
   }
 
   async parseGitignore() {
@@ -33,7 +42,7 @@ export class Setenver {
   }
 
   async collectFiles() {
-    const gitignoreFiles = await this.parseGitignore();
+    const gitignoreFiles = this.useGitignore ? await this.parseGitignore() : [];
     return globbySync(`${this.root}/**/.env.example`, {
       ignore: gitignoreFiles
     });
