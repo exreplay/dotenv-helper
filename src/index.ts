@@ -1,10 +1,10 @@
-import { readFile, writeFile, access } from 'fs/promises';
-import { constants } from 'fs';
+import { readFile, writeFile } from 'fs/promises';
 import { globbySync } from 'globby';
 import { relative, resolve } from 'path';
 import prompts, { PromptObject, Answers } from 'prompts';
 import { Files, Variable, VariableType } from './types';
 import mri from 'mri';
+import { parse } from 'parse-gitignore';
 
 export class Setenver {
   root: string;
@@ -24,27 +24,17 @@ export class Setenver {
 
   async parseGitignore() {
     const gitignore = resolve(this.root, '.gitignore');
-
-    try {
-      await access(gitignore, constants.F_OK);
-    } catch {
-      return [];
-    }
-
-    const content = await readFile(gitignore, 'utf-8');
-    const lines = content.split('\n');
-    const files = lines
-      .filter((line) => !line.startsWith('#'))
-      .map((line) => line.trim())
-      .filter((line) => line.length > 0);
-
-    return files;
+    const gitignoreContent = await readFile(gitignore, 'utf-8');
+    return parse(gitignoreContent);
   }
 
   async collectFiles() {
-    const gitignoreFiles = this.noGitignore ? await this.parseGitignore() : [];
+    const { globs } = await this.parseGitignore();
+    const ignore = globs().flatMap((e) =>
+      e.type === 'ignore' ? e.patterns : e.patterns
+    );
     return globbySync(`${this.root}/**/.env.example`, {
-      ignore: gitignoreFiles
+      ignore: this.noGitignore ? ignore : []
     });
   }
 
