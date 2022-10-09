@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.11](https://github.com/exreplay/dotenv-helper/compare/v0.0.10...v0.0.11) (2022-10-09)
+
+
+### Features
+
+* use .gitignore by default ([#1](https://github.com/exreplay/dotenv-helper/issues/1)) ([e674284](https://github.com/exreplay/dotenv-helper/commit/e67428425fa1610f6fe7efa9570c54142de70029))
+
 ### [0.0.10](https://github.com/exreplay/dotenv-helper/compare/v0.0.9...v0.0.10) (2022-10-06)
 
 
