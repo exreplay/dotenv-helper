@@ -23,4 +23,4 @@ $ pnpm dlx setenver
 
 | Option | Default | Description |
 | ------ | ------- | ----------- |
-| --no-gitignore | false | Do not use .gitignore content as exclude patterns | 
+| --no-gitignore | false | By default, we parse the .gitignore inside the root folder and use it to exclude files and folders. You can use this argument to disable that behavior. | 
