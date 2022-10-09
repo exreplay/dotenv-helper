@@ -10,7 +10,7 @@ export class Setenver {
   root: string;
   files: Files = {};
 
-  noGitignore = true;
+  noGitignore = false;
 
   constructor(root: string) {
     this.root = root;
@@ -25,16 +25,16 @@ export class Setenver {
   async parseGitignore() {
     const gitignore = resolve(this.root, '.gitignore');
     const gitignoreContent = await readFile(gitignore, 'utf-8');
-    return parse(gitignoreContent);
+    const { globs } = parse(gitignoreContent);
+    return globs().flatMap((e) =>
+      e.type === 'ignore' ? e.patterns : e.patterns
+    );
   }
 
   async collectFiles() {
-    const { globs } = await this.parseGitignore();
-    const ignore = globs().flatMap((e) =>
-      e.type === 'ignore' ? e.patterns : e.patterns
-    );
+    const ignore = await this.parseGitignore();
     return globbySync(`${this.root}/**/.env.example`, {
-      ignore: this.noGitignore ? ignore : []
+      ignore: this.noGitignore ? [] : ignore
     });
   }
 
