@@ -5,6 +5,8 @@ specifiers:
   '@types/node': '16'
   '@types/prompts': ^2.4.1
   globby: ^13.1.2
+  mri: ^1.2.0
+  parse-gitignore: ^2.0.0
   prompts: ^2.4.2
   standard-version: ^9.5.0
   typescript: ^4.8.4
@@ -13,6 +15,8 @@ specifiers:
 
 dependencies:
   globby: 13.1.2
+  mri: 1.2.0
+  parse-gitignore: 2.0.0
   prompts: 2.4.2
 
 devDependencies:
@@ -3038,7 +3042,6 @@ packages:
   /mri/1.2.0:
     resolution: {integrity: sha512-tzzskb3bG8LvYGFF/mDTpq3jpI6Q9wc3LEmBaghu+DdCssd1FakN7Bc0hVNmEyGq1bq3RgfkCb3cmQLpNPOroA==}
     engines: {node: '>=4'}
-    dev: true
 
   /ms/2.0.0:
     resolution: {integrity: sha512-Tpp60P6IUJDTuOq/5Z8cdskzJujfwqfOTkrwIwj7IRISpnkJnT6SyJ4PCPnGMoFjC9ddhal5KVIYtAt97ix05A==}
@@ -3211,6 +3214,11 @@ packages:
     dependencies:
       callsites: 3.1.0
     dev: true
+
+  /parse-gitignore/2.0.0:
+    resolution: {integrity: sha512-RmVuCHWsfu0QPNW+mraxh/xjQVw/lhUCUru8Zni3Ctq3AoMhpDTq0OVdKS6iesd6Kqb7viCV3isAL43dciOSog==}
+    engines: {node: '>=14'}
+    dev: false
 
   /parse-json/4.0.0:
     resolution: {integrity: sha512-aOIos8bujGN93/8Ox/jPLh7RwVnPEysynVFE+fQZyg6jKELEHwzgKdLRFHUgXJL6kylijVSBC4BvN9OmsB48Rw==}

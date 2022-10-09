@@ -1,2 +1,5 @@
-node_modules
+# Only ignore root node_modules because we need the node_modules in the fixtures folder for testing
+/node_modules
+
 dist
+.DS_Store

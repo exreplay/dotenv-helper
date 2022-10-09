@@ -1,20 +1,40 @@
 import { readFile, writeFile } from 'fs/promises';
 import { globbySync } from 'globby';
-import { relative } from 'path';
+import { relative, resolve } from 'path';
 import prompts, { PromptObject, Answers } from 'prompts';
 import { Files, Variable, VariableType } from './types';
+import mri from 'mri';
+import { parse } from 'parse-gitignore';
 
 export class Setenver {
   root: string;
   files: Files = {};
 
+  noGitignore = false;
+
   constructor(root: string) {
     this.root = root;
+
+    const argv = mri(process.argv.slice(2));
+
+    if (argv.gitignore === false) {
+      this.noGitignore = true;
+    }
   }
 
-  collectFiles() {
+  async parseGitignore() {
+    const gitignore = resolve(this.root, '.gitignore');
+    const gitignoreContent = await readFile(gitignore, 'utf-8');
+    const { globs } = parse(gitignoreContent);
+    return globs().flatMap((e) =>
+      e.type === 'ignore' ? e.patterns : e.patterns
+    );
+  }
+
+  async collectFiles() {
+    const ignore = await this.parseGitignore();
     return globbySync(`${this.root}/**/.env.example`, {
-      ignore: ['**/node_modules/**']
+      ignore: this.noGitignore ? [] : ignore
     });
   }
 
@@ -48,7 +68,7 @@ export class Setenver {
   }
 
   async selectFiles() {
-    const collectedFiles = this.collectFiles();
+    const collectedFiles = await this.collectFiles();
 
     const { files } = await prompts({
       type: 'multiselect',
@@ -136,6 +156,7 @@ export class Setenver {
       console.log('No files selected. Exiting...');
       return;
     }
+
     await this.parseFiles(selectedFiles);
 
     const questions = this.generateQuestions();

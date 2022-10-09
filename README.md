@@ -19,3 +19,11 @@ $ yarn dlx setenver
 $ pnpm dlx setenver
 ```
 
+## Arguments
+
+### --no-gitignore
+
+default: `false`
+
+By default, we parse the .gitignore inside the root folder and use it to exclude files and folders. You can use this argument to disable that behavior. 
+
