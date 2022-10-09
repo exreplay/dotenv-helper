@@ -10,7 +10,7 @@ export class Setenver {
   root: string;
   files: Files = {};
 
-  useGitignore = true;
+  noGitignore = true;
 
   constructor(root: string) {
     this.root = root;
@@ -18,7 +18,7 @@ export class Setenver {
     const argv = mri(process.argv.slice(2));
 
     if (argv.gitignore === false) {
-      this.useGitignore = false;
+      this.noGitignore = true;
     }
   }
 
@@ -42,7 +42,7 @@ export class Setenver {
   }
 
   async collectFiles() {
-    const gitignoreFiles = this.useGitignore ? await this.parseGitignore() : [];
+    const gitignoreFiles = this.noGitignore ? await this.parseGitignore() : [];
     return globbySync(`${this.root}/**/.env.example`, {
       ignore: gitignoreFiles
     });

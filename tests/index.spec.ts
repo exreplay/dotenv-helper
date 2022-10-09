@@ -38,9 +38,9 @@ describe('test', () => {
     expect(files).not.toContain(nodeModulesPackageEnv);
   });
 
-  it('should also collect files from node modules when useGitignore is false', async () => {
+  it('should also collect files from node modules when noGitignore is true', async () => {
     const helper = new Setenver(rootPath);
-    helper.useGitignore = false;
+    helper.noGitignore = false;
     const files = await helper.collectFiles();
 
     expect(files).toContain(rootEnv);

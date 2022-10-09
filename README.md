@@ -19,3 +19,8 @@ $ yarn dlx setenver
 $ pnpm dlx setenver
 ```
 
+## Arguments
+
+| Option | Default | Description |
+| ------ | ------- | ----------- |
+| --no-gitignore | false | Do not use .gitignore content as exclude patterns | 
