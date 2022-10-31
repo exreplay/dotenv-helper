@@ -4,7 +4,9 @@ import { relative, resolve } from 'path';
 import prompts, { PromptObject, Answers } from 'prompts';
 import { Files, Variable, VariableType } from './types';
 import mri from 'mri';
-import { parse } from 'parse-gitignore';
+// parse-gitignore is a commonjs module so we need to import it like this
+import parseGitignore from 'parse-gitignore';
+const { parse } = parseGitignore;
 
 export class Setenver {
   root: string;
