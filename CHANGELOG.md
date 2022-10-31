@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.12](https://github.com/exreplay/setenver/compare/v0.0.11...v0.0.12) (2022-10-31)
+
+
+### Bug Fixes
+
+* fixed parse-gitignore import ([1031bf5](https://github.com/exreplay/setenver/commit/1031bf5928d97676931f45951ad8fe68fb4cf2c1))
+
 ### [0.0.11](https://github.com/exreplay/dotenv-helper/compare/v0.0.10...v0.0.11) (2022-10-09)
 
 
