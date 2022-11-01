@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.13](https://github.com/exreplay/setenver/compare/v0.0.12...v0.0.13) (2022-11-01)
+
+
+### Features
+
+* rewrite command system ([#2](https://github.com/exreplay/setenver/issues/2)) ([271fc54](https://github.com/exreplay/setenver/commit/271fc543f7b8f57cd52342fa1f271c23557a0cf3))
+
 ### [0.0.12](https://github.com/exreplay/setenver/compare/v0.0.11...v0.0.12) (2022-10-31)
 
 
