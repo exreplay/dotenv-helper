@@ -1,8 +1,6 @@
 # setenver
 
-When setting up a new project (e.g. a monorepo) you have to look in every package if there is a `.env.example`, copy the file, rename it to `.env` and update its content.
-
-To fix this problem, this package walks through your project, collects all the `.env.example` files, gives you a prompt for every variable and writes the `.env` files when you are done. 
+This package aims to provide a set of helpful commands to interact with `.env` files.
 
 ## How to use
 
@@ -10,18 +8,34 @@ Just use the execute command from your prefered package manager.
 
 ```bash
 # npm
-$ npx setenver
+$ npx setenver [command]
 
 # yarn
-$ yarn dlx setenver
+$ yarn dlx setenver [command]
 
 # pnpm
-$ pnpm dlx setenver
+$ pnpm dlx setenver [command]
 ```
 
-## Arguments
+## Commands
 
-### --no-gitignore
+### `usage`
+
+Show usage information
+
+### `version`
+
+Show the current version of `setenver`
+
+### `examples`
+
+When setting up a new project (e.g. a monorepo) you have to look in every package if there is a `.env.example`, copy the file, rename it to `.env` and update its content.
+
+To fix this problem, this command walks through your project, collects all the `.env.example` files, gives you a prompt for every variable and writes the `.env` files when you are done. 
+
+### Arguments
+
+**--no-gitignore**
 
 default: `false`
 
