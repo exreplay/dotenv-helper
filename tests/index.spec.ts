@@ -1,267 +1,70 @@
-import { rename } from 'fs/promises';
-import { resolve } from 'path';
-import { describe, it, expect, beforeAll, afterAll } from 'vitest';
-import { Setenver } from '../src/index';
+import { describe, it, expect, vi, afterEach, beforeEach } from 'vitest';
+import { Setenver } from '../src';
+import { rootPath } from './setup';
 
-const rootPath = resolve(__dirname, './fixtures/monorepo/');
-const rootEnv = resolve(rootPath, '.env.example');
-const packageEnv = resolve(rootPath, 'packages/test/.env.example');
-const nodeModulesRootEnv = resolve(rootPath, 'node_modules/test/.env.example');
-const nodeModulesPackageEnv = resolve(
-  rootPath,
-  'packages/test/node_modules/another_test/.env.example'
-);
+const consoleLog = console.log;
+const argv = process.argv;
 
-beforeAll(async () => {
-  await rename(
-    resolve(rootPath, '_.gitignore'),
-    resolve(rootPath, '.gitignore')
-  );
-});
+vi.mock('setenver/package.json', () => ({
+  version: '1.0.0'
+}));
 
-afterAll(async () => {
-  await rename(
-    resolve(rootPath, '.gitignore'),
-    resolve(rootPath, '_.gitignore')
-  );
-});
+describe('setenver', () => {
+  const mockLog = vi.fn();
 
-describe('test', () => {
-  it('should collect files correctly and should ignore folders from .gitignore', async () => {
-    const helper = new Setenver(rootPath);
-    const files = await helper.collectFiles();
-
-    expect(files).toContain(rootEnv);
-    expect(files).toContain(packageEnv);
-
-    expect(files).not.toContain(nodeModulesRootEnv);
-    expect(files).not.toContain(nodeModulesPackageEnv);
+  beforeEach(() => {
+    console.log = mockLog;
   });
 
-  it('should also collect files from node modules when noGitignore is true', async () => {
-    const helper = new Setenver(rootPath);
-    helper.noGitignore = true;
-    const files = await helper.collectFiles();
-
-    expect(files).toContain(rootEnv);
-    expect(files).toContain(packageEnv);
-    expect(files).toContain(nodeModulesRootEnv);
-    expect(files).toContain(nodeModulesPackageEnv);
+  afterEach(() => {
+    console.log = consoleLog;
+    process.argv = argv;
+    vi.clearAllMocks();
   });
 
-  it('should parse variables correctly', async () => {
-    const helper = new Setenver(rootPath);
-    const collectedFiles = await helper.collectFiles();
-    await helper.parseFiles(collectedFiles);
+  it('should execute command correctly', async () => {
+    process.argv = ['pnpm', 'dlx', 'setenver', 'version'];
 
-    expect(helper.files).toEqual({
-      [rootEnv]: [
-        {
-          defaultValue: '# A comment',
-          type: 'comment'
-        },
-        {
-          defaultValue: 'localhost',
-          key: 'DATABASE_HOST',
-          type: 'variable'
-        },
-        {
-          defaultValue: 'admin',
-          key: 'DATABASE_USER',
-          type: 'variable'
-        },
-        {
-          defaultValue: '',
-          key: 'DATABASE_PASSWORD',
-          type: 'variable'
-        },
-        {
-          defaultValue: '',
-          type: 'new-line'
-        }
-      ],
-      [packageEnv]: [
-        {
-          defaultValue: 'super_secret_value',
-          key: 'JWT_SECRET',
-          type: 'variable'
-        },
-        {
-          defaultValue: '',
-          type: 'new-line'
-        },
-        {
-          defaultValue: '# Another comment',
-          type: 'comment'
-        },
-        {
-          defaultValue: '',
-          key: 'ADMIN_SECRET',
-          type: 'variable'
-        },
-        {
-          defaultValue: '',
-          type: 'new-line'
-        }
+    const setenver = new Setenver(rootPath);
+    await setenver.run();
+
+    expect(mockLog.mock.calls).toMatchInlineSnapshot(`
+      [
+        [
+          "
+      ",
+        ],
+        [
+          "setenver [36mv1.0.0[39m",
+        ],
+        [
+          "
+      ",
+        ],
       ]
-    });
+    `);
   });
 
-  it('should generate questions correctly', async () => {
-    const helper = new Setenver(rootPath);
-    const collectedFiles = await helper.collectFiles();
-    await helper.parseFiles(collectedFiles);
-    const questions = helper.generateQuestions();
+  it('should execute usage command when nothing is passed', async () => {
+    const setenver = new Setenver(rootPath);
+    await setenver.run();
 
-    expect(questions).toEqual({
-      [rootEnv]: [
-        {
-          initial: 'localhost',
-          message: 'DATABASE_HOST',
-          name: '1',
-          type: 'text'
-        },
-        {
-          initial: 'admin',
-          message: 'DATABASE_USER',
-          name: '2',
-          type: 'text'
-        },
-        {
-          initial: '',
-          message: 'DATABASE_PASSWORD',
-          name: '3',
-          type: 'text'
-        }
-      ],
-      [packageEnv]: [
-        {
-          initial: 'super_secret_value',
-          message: 'JWT_SECRET',
-          name: '0',
-          type: 'text'
-        },
-        {
-          initial: '',
-          message: 'ADMIN_SECRET',
-          name: '3',
-          type: 'text'
-        }
+    expect(mockLog.mock.calls).toMatchInlineSnapshot(`
+      [
+        [
+          "
+      ",
+        ],
+        [
+          "Usage: setenver [36musage|examples|version[39m [args]
+
+      Use [36msetenver [command] --help[39m to see help for a command.",
+        ],
+        [
+          "
+      ",
+        ],
       ]
-    });
-  });
-
-  it('should set answers correctly', async () => {
-    const helper = new Setenver(rootPath);
-    const collectedFiles = await helper.collectFiles();
-    await helper.parseFiles(collectedFiles);
-
-    helper.setAnswers(rootEnv, {
-      1: 'localhost',
-      2: 'root',
-      3: 'password'
-    });
-
-    helper.setAnswers(packageEnv, {
-      0: 'super_secret_value',
-      3: 'admin_secret'
-    });
-
-    expect(helper.files).toEqual({
-      [rootEnv]: [
-        {
-          defaultValue: '# A comment',
-          type: 'comment'
-        },
-        {
-          defaultValue: 'localhost',
-          value: 'localhost',
-          key: 'DATABASE_HOST',
-          type: 'variable'
-        },
-        {
-          defaultValue: 'admin',
-          value: 'root',
-          key: 'DATABASE_USER',
-          type: 'variable'
-        },
-        {
-          defaultValue: '',
-          value: 'password',
-          key: 'DATABASE_PASSWORD',
-          type: 'variable'
-        },
-        {
-          defaultValue: '',
-          type: 'new-line'
-        }
-      ],
-      [packageEnv]: [
-        {
-          defaultValue: 'super_secret_value',
-          value: 'super_secret_value',
-          key: 'JWT_SECRET',
-          type: 'variable'
-        },
-        {
-          defaultValue: '',
-          type: 'new-line'
-        },
-        {
-          defaultValue: '# Another comment',
-          type: 'comment'
-        },
-        {
-          defaultValue: '',
-          value: 'admin_secret',
-          key: 'ADMIN_SECRET',
-          type: 'variable'
-        },
-        {
-          defaultValue: '',
-          type: 'new-line'
-        }
-      ]
-    });
-  });
-
-  it('should prepare env file contents correctly', async () => {
-    const helper = new Setenver(rootPath);
-    const collectedFiles = await helper.collectFiles();
-    await helper.parseFiles(collectedFiles);
-
-    helper.setAnswers(rootEnv, {
-      1: 'localhost',
-      2: 'root',
-      3: 'password'
-    });
-
-    helper.setAnswers(packageEnv, {
-      0: 'super_secret_value',
-      3: 'admin_secret'
-    });
-
-    const files = helper.prepareEnvFilesContent();
-
-    expect(files).toEqual([
-      {
-        file: rootEnv.replace('.example', ''),
-        contents: `# A comment
-DATABASE_HOST=localhost
-DATABASE_USER=root
-DATABASE_PASSWORD=password
-
-`
-      },
-      {
-        file: packageEnv.replace('.example', ''),
-        contents: `JWT_SECRET=super_secret_value
-
-# Another comment
-ADMIN_SECRET=admin_secret
-
-`
-      }
-    ]);
+    `);
   });
 });

@@ -1,184 +1,34 @@
-import { readFile, writeFile } from 'fs/promises';
-import { globbySync } from 'globby';
-import { relative, resolve } from 'path';
-import prompts, { PromptObject, Answers } from 'prompts';
-import { Files, Variable, VariableType } from './types';
-import mri from 'mri';
-// parse-gitignore is a commonjs module so we need to import it like this
-import parseGitignore from 'parse-gitignore';
-const { parse } = parseGitignore;
+import { Command } from './commands/command';
+import { ExamplesCommand } from './commands/examples';
+import { UsageCommand } from './commands/usage';
+import { VersionCommand } from './commands/version';
 
 export class Setenver {
   root: string;
-  files: Files = {};
-
-  noGitignore = false;
+  usage: UsageCommand;
+  commands: Command[] = [];
 
   constructor(root: string) {
     this.root = root;
 
-    const argv = mri(process.argv.slice(2));
-
-    if (argv.gitignore === false) {
-      this.noGitignore = true;
-    }
+    this.commands.push(new UsageCommand(this.commands));
+    this.commands.push(new ExamplesCommand(root));
+    this.commands.push(new VersionCommand());
   }
 
-  async parseGitignore() {
-    const gitignore = resolve(this.root, '.gitignore');
-    const gitignoreContent = await readFile(gitignore, 'utf-8');
-    const { globs } = parse(gitignoreContent);
-    return globs().flatMap((e) =>
-      e.type === 'ignore' ? e.patterns : e.patterns
-    );
+  async executeCommand(command: Command) {
+    await command.run();
+    await command.afterRun?.();
   }
 
-  async collectFiles() {
-    const ignore = await this.parseGitignore();
-    return globbySync(`${this.root}/**/.env.example`, {
-      ignore: this.noGitignore ? [] : ignore
-    });
-  }
-
-  parseContent(content: string) {
-    const lines = content.split('\n');
-    const variables: Variable[] = [];
-
-    for (const line of lines) {
-      if (line.startsWith('#')) {
-        variables.push({
-          defaultValue: line,
-          type: VariableType.COMMENT
-        });
-      } else if (line === '') {
-        variables.push({
-          defaultValue: line,
-          type: VariableType.NEW_LINE
-        });
-      } else {
-        const [variable, value] = line.split('=');
-
-        variables.push({
-          key: variable,
-          defaultValue: value,
-          type: VariableType.VARIABLE
-        });
+  async run() {
+    for (const command of this.commands) {
+      if (command.shouldRun()) {
+        await this.executeCommand(command);
+        return;
       }
     }
 
-    return variables;
-  }
-
-  async selectFiles() {
-    const collectedFiles = await this.collectFiles();
-
-    const { files } = await prompts({
-      type: 'multiselect',
-      name: 'files',
-      message: 'Select files to parse',
-      choices: collectedFiles.map((file) => ({
-        title: relative(this.root, file),
-        value: file,
-        selected: true
-      }))
-    });
-
-    return files as string[];
-  }
-
-  async parseFiles(files: string[]) {
-    for (const file of files) {
-      const content = await readFile(file, 'utf-8');
-      this.files[file] = this.parseContent(content);
-    }
-  }
-
-  generateQuestions() {
-    const questions: { [filename: string]: PromptObject[] | undefined } = {};
-
-    for (const [file, variables] of Object.entries(this.files)) {
-      for (let i = 0; i < variables.length; i++) {
-        const variable = variables[i];
-        if (variable.type !== VariableType.VARIABLE) continue;
-
-        if (!questions[file]) questions[file] = [];
-
-        questions[file].push({
-          type: 'text',
-          name: i.toString(),
-          message: variable.key,
-          initial: variable.defaultValue
-        });
-      }
-    }
-
-    return questions;
-  }
-
-  setAnswers(file: string, answers: Answers<string>) {
-    for (const [key, answer] of Object.entries(answers)) {
-      const parsedKey = parseInt(key, 10);
-
-      if (this.files[file][parsedKey]) {
-        this.files[file][parsedKey].value = answer;
-      }
-    }
-  }
-
-  prepareEnvFilesContent() {
-    const files: { file: string; contents: string }[] = [];
-
-    for (const [file, variables] of Object.entries(this.files)) {
-      let fileContent = '';
-
-      for (const variable of variables) {
-        if (variable.type === VariableType.VARIABLE) {
-          fileContent += `${variable.key}=${
-            variable.value || variable.defaultValue
-          }\n`;
-        } else if (variable.type === VariableType.COMMENT) {
-          fileContent += `${variable.defaultValue}\n`;
-        } else if (variable.type === VariableType.NEW_LINE) {
-          fileContent += '\n';
-        }
-      }
-
-      files.push({
-        file: file.replace('.example', ''),
-        contents: fileContent
-      });
-    }
-
-    return files;
-  }
-
-  async execute() {
-    const selectedFiles = await this.selectFiles();
-    if (!selectedFiles.length) {
-      console.log('No files selected. Exiting...');
-      return;
-    }
-
-    await this.parseFiles(selectedFiles);
-
-    const questions = this.generateQuestions();
-    for (const [file, question] of Object.entries(questions)) {
-      if (question) {
-        console.log(relative(this.root, file));
-
-        const answers = await prompts(question, {
-          onCancel: () => process.exit(0)
-        });
-
-        this.setAnswers(file, answers);
-      }
-    }
-
-    const files = this.prepareEnvFilesContent();
-    for (const { file, contents } of files) {
-      await writeFile(file, contents);
-    }
-
-    return this.root;
+    await this.executeCommand(this.commands.find((c) => c.name === 'usage'));
   }
 }
