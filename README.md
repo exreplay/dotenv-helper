@@ -19,15 +19,15 @@ $ pnpm dlx setenver [command]
 
 ## Commands
 
-### usage
+### `usage`
 
 Show usage information
 
-### version
+### `version`
 
 Show the current version of `setenver`
 
-### examples
+### `examples`
 
 When setting up a new project (e.g. a monorepo) you have to look in every package if there is a `.env.example`, copy the file, rename it to `.env` and update its content.
 
